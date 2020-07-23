@@ -78,30 +78,54 @@ public:
                     mesh.elevations.reserve(message.get_uint32());
                     break;
                 case protozero::tag_and_type(tag::elevations, protozero::pbf_wire_type::length_delimited): {
+#if 1
+                    message.get_uint32();
+                    size_t e = mesh.elevations.capacity();
+                    while (mesh.elevations.size() < e) {
+                        mesh.elevations.emplace_back(message.get_sint32());
+                    }
+#else
                     auto pi = message.get_packed_sint32();
                     for (auto it = pi.begin(); it != pi.end(); ++it) {
                         mesh.elevations.push_back(*it);
                     }
+#endif
                     break;
                 }
                 case protozero::tag_and_type(tag::coordinates_count, protozero::pbf_wire_type::varint):
                     mesh.coordinates.reserve(message.get_uint32() * 2);
                     break;
                 case protozero::tag_and_type(tag::coordinates, protozero::pbf_wire_type::length_delimited): {
+#if 1
+                    message.get_uint32();
+                    size_t e = mesh.coordinates.capacity();
+                    while (mesh.coordinates.size() < e) {
+                        mesh.coordinates.emplace_back(message.get_sint32());
+                    }
+#else
                     auto pi = message.get_packed_sint32();
                     for (auto it = pi.begin(); it != pi.end(); ++it) {
                         mesh.coordinates.push_back(*it);
                     }
+#endif
                     break;
                 }
                 case protozero::tag_and_type(tag::triangles_count, protozero::pbf_wire_type::varint):
                     mesh.triangles.reserve(message.get_uint32() * 3);
                     break;
                 case protozero::tag_and_type(tag::triangles, protozero::pbf_wire_type::length_delimited): {
+#if 1
+                    message.get_uint32();
+                    size_t e = mesh.triangles.capacity();
+                    while (mesh.triangles.size() < e) {
+                        mesh.triangles.emplace_back(message.get_uint32());
+                    }
+#else
                     auto pi = message.get_packed_uint32();
                     for (auto it = pi.begin(); it != pi.end(); ++it) {
                         mesh.triangles.push_back(*it);
                     }
+#endif
                     break;
                 }
                 default:
